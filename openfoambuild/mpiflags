@@ -1,0 +1,3 @@
+export MMTESTS_MPI_OPTS="--map-by node"
+
+log_runtime "Extra MPI Options: $MMTESTS_MPI_OPTS"

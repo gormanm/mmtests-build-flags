@@ -1,0 +1,123 @@
+SVE=no
+
+set_toolchain() {
+	local TOOLCHAIN=$1
+	MMTESTS_REPORT_COMPILER=yes
+
+	case $TOOLCHAIN in
+	breaktest)
+		export MMTESTS_C_COMPILER=broken-c
+		export MMTESTS_CPP_COMPILER=broken-cpp
+		export MMTESTS_CXX_COMPILER=broken-c++
+		export MMTESTS_CXXCPP_COMPILER=broken-cpp
+		export MMTESTS_FORTRAN_COMPILER=broken-fortran
+		;;
+	gcc-9|hpc-gcc-9)
+		install-depends gcc9 gcc9-c++ gcc9-fortran
+		export MMTESTS_C_COMPILER=gcc-9
+		export MMTESTS_CPP_COMPILER=cpp-9
+		export MMTESTS_CXX_COMPILER=g++-9
+		export MMTESTS_CXXCPP_COMPILER=cpp-9
+		export MMTESTS_FORTRAN_COMPILER=gfortran-9
+		SVE=yes
+		;;
+	gcc-10|hpc-gcc-10)
+		install-depends gcc10 gcc10-c++ gcc10-fortran
+		export MMTESTS_C_COMPILER=gcc-10
+		export MMTESTS_CPP_COMPILER=cpp-10
+		export MMTESTS_CXX_COMPILER=g++-10
+		export MMTESTS_CXXCPP_COMPILER=cpp-10
+		export MMTESTS_FORTRAN_COMPILER=gfortran-10
+		SVE=yes
+		;;
+	*)
+		die "Failed to load $TOOLCHAIN toolchain"
+		;;
+	esac
+
+	case $TOOLCHAIN in
+	hpc-gcc-9)
+		module load gnu/9 || die "Failed to load module"
+		;;
+	hpc-gcc-10)
+		module load gnu/10 || die "Failed to load module"
+		;;
+	esac
+}
+
+# Works when Makefile uses established patterns
+load_standard_environment() {
+	MMTESTS_REPORT_COMPILER=yes
+	export CC=$MMTESTS_C_COMPILER
+	export CPP=$MMTESTS_CPP_COMPILER
+	export CXX=$MMTESTS_CXX_COMPILER
+	export CXXCPP=$MMTESTS_CXXCPP_COMPILER
+	export FC=$MMTESTS_FORTRAN_COMPILER
+	export FCCPP=$MMTESTS_CPP_COMPILER
+	export F77=$MMTESTS_FORTRAN_COMPILER
+}
+
+load_mpi_environment() {
+	export OMPI_CC=$MMTESTS_C_COMPILER
+	export OMPI_CXX=$MMTESTS_CXX_COMPILER
+	export OMPI_FC=$MMTESTS_FORTRAN_COMPILER
+	export OMPI_F77=$MMTESTS_FORTRAN_COMPILER
+	export OMPI_F90=$MMTESTS_FORTRAN_COMPILER
+}
+
+rm /tmp/log_opt
+touch /tmp/log_opt
+log_opt() {
+	echo "$@" >> /tmp/log_opt
+}
+
+load_dummy_environment() {
+	DUMMY="/tmp/dummy-environ"
+	rm -rf $DUMMY
+	mkdir -p $DUMMY
+	ln -s /usr/bin/$CC	$DUMMY/gcc
+	ln -s /usr/bin/$CPP 	$DUMMY/cpp
+	ln -s /usr/bin/$CXX	$DUMMY/g++
+	ln -s /usr/bin/$CXXCPP	$DUMMY/cpp
+	ln -s /usr/bin/$FC	$DUMMY/gfortran
+	ln -s /usr/bin/$F77	$DUMMY/gfortran
+
+	export PATH=$DUMMY:$PATH
+}
+
+MMTESTS_REPORT_COMPILER=no
+MMTESTS_C_COMPILER=${MMTESTS_C_COMPILER:-gcc}
+MMTESTS_CPP_COMPILER=${MMTESTS_CPP_COMPILER:-cpp}
+MMTESTS_CXX_COMPILER=${MMTESTS_CXX_COMPILER:-g++}
+MMTESTS_FORTRAN_COMPILER=${MMTESTS_FORTRAN_COMPILER:-gfortran}
+
+if [ "$MMTESTS_TOOLCHAIN" != "" ]; then
+	echo Loading toolchain $MMTESTS_TOOLCHAIN
+	set_toolchain $MMTESTS_TOOLCHAIN
+fi
+if [ "$MMTESTS_LOAD_STANDARD_TOOLCHAIN" = "yes" ]; then
+	echo Loading standard toolchain environment
+	load_standard_environment
+	load_mpi_environment
+fi
+
+export MARCH_FLAG_DEFAULT="-march=native"
+export MTUNE_FLAG_DEFAULT="-mtune=native"
+export COMPILE_OPT_ALWAYS=
+
+export DEFAULT_OPTIMISATION_LEVEL="-O3"
+export DEFAULT_MATH_OPTIMISATION_LEVEL="-O3"
+
+if [ "$SVE" = "yes" ]; then
+	case `uname -m` in
+	aarch64)
+		grep -q sve /proc/cpuinfo
+		if [ $? -eq 0 ]; then
+			export MARCH_FLAG_DEFAULT="-march=armv8.2-a+sve+fp16"
+			export MTUNE_FLAG_DEFAULT="-mtune=native"
+			export COMPILE_OPT_ALWAYS="-msve-vector-bits=512 "
+		fi
+		export COMPILE_OPT_ALWAYS+="-moutline-atomics"
+		;;
+	esac
+fi

@@ -1,0 +1,35 @@
+CFLAGS="$DEFAULT_OPTIMISATION_LEVEL"
+CPPFLAGS="$DEFAULT_OPTIMISATION_LEVEL"
+
+case $MMTESTS_TOOLCHAIN in
+gcc-9)
+	CPPFLAGS+=" -Wno-deprecated-copy"
+	;;
+gcc-10)
+	CPPFLAGS+=" -Wno-deprecated-copy"
+	;;
+esac
+
+CFLAGS+=" $MARCH_FLAG_DEFAULT $MTUNE_FLAG_DEFAULT $COMPILE_OPT_ALWAYS"
+CPPFLAGS+=" $MARCH_FLAG_DEFAULT $MTUNE_FLAG_DEFAULT $COMPILE_OPT_ALWAYS"
+
+# OpenFOAM optimisations
+for FAMILY in Gcc 64Gcc ARM64Gcc; do
+	sed -i -e "s/^cOPT.*/& $CFLAGS/" wmake/rules/linux$FAMILY/cOpt ||
+		die "Failed to set option in wmake/rules/linux$FAMILY/cOpt"
+	sed -i -e "s/^c++OPT.*/& $CPPFLAGS/" wmake/rules/linux$FAMILY/c++Opt ||
+		die "Failed to set option in wmake/rules/$FAMILY/c++Opt"
+done
+
+# Third party optimisations e.g. fftw
+OLD_WM_CFLAGS=`grep "^export WM_CFLAGS=" etc/config.sh/settings | awk -F \" '{print $2}'`
+OLD_WM_CXXFLAGS=`grep "^export WM_CXXFLAGS=" etc/config.sh/settings | awk -F \" '{print $2}'`
+sed -i -e "s/^export WM_CFLAGS=.*/export WM_CFLAGS=\"$OLD_WM_CFLAGS $CFLAGS\"/" etc/config.sh/settings
+sed -i -e "s/^export WM_CXXFLAGS=.*/export WM_CXXFLAGS=\"$OLD_WM_CXXFLAGS $CPPFLAGS\"/" etc/config.sh/settings
+
+log_opt "cOPT:             $CFLAGS"
+log_opt "c++Opt:           $CPPFLAGS"
+
+load_standard_environment
+load_mpi_environment
+load_dummy_environment

@@ -1,1 +1,1 @@
-# mmtests-build-flags
+This is a repository that tracks MMTests compiler optimisations.

@@ -1,0 +1,8 @@
+SYSCTL_LIST="
+kernel.numa_balancing=0
+"
+
+for SYSCTL in $SYSCTL_LIST; do
+	sudo sysctl $SYSCTL
+	log_sysctl $SYSCTL
+done

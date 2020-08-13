@@ -1,0 +1,17 @@
+if [ "$MMTESTS_REPORT_COMPILER" != "no" ]; then
+	echo $P Build notes					| tee -a $SHELLPACK_LOG/compiler.opts
+	echo ===================				| tee -a $SHELLPACK_LOG/compiler.opts
+	$MMTESTS_C_COMPILER --version				| tee -a $SHELLPACK_LOG/compiler.opts
+	echo "C compiler:       $MMTESTS_C_COMPILER"		| tee -a $SHELLPACK_LOG/compiler.opts
+	echo "C++ compiler:     $MMTESTS_CXX_COMPILER"		| tee -a $SHELLPACK_LOG/compiler.opts
+	echo "C Preprocessor:   $MMTESTS_CPP_COMPILER"		| tee -a $SHELLPACK_LOG/compiler.opts
+	echo "Fortran compiler: $MMTESTS_FORTRAN_COMPILER"	| tee -a $SHELLPACK_LOG/compiler.opts
+	echo "march:            $MARCH_FLAG_DEFAULT"		| tee -a $SHELLPACK_LOG/compiler.opts
+	echo "mtune:            $MTUNE_FLAG_DEFAULT"		| tee -a $SHELLPACK_LOG/compiler.opts
+
+	if [ -e /tmp/log_opt ]; then
+		cat /tmp/log_opt 				| tee -a $SHELLPACK_LOG/compiler.opts
+	fi
+	echo >> $SHELLPACK_LOG/compiler.opts
+	echo ===================
+fi
