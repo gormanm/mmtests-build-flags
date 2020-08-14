@@ -16,5 +16,9 @@ export CFLAGS
 export CXXFLAGS
 export FCFLAGS
 
+log_opt "CFLAGS:           $CFLAGS_EXTRA"
+log_opt "CXXFLAGS:         $CFLAGS_EXTRA"
+log_opt "FCFLAGS:          $CFLAGS_EXTRA"
+
 load_standard_environment
 load_dummy_environment
