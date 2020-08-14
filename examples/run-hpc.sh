@@ -1,7 +1,7 @@
 #!/bin/bash
 
 VERSION="-v14"
-MMTESTS_GIT_COMMIT="c0478ec90b4e48732efce0cd689147d330261c9d"
+MMTESTS_GIT_COMMIT="825e0dba4182932827fab721175366f630bdb8aa"
 MONITORS="no-monitor run-monitor"
 LOCAL_MIRROR=UNAVAILABLE
 DISABLE_TOOLCHAIN_OPENFOAM=
@@ -105,9 +105,12 @@ for MONITOR in $MONITORS; do
 		rm -rf work/testdisk
 		rm -rf work/tmp
 		if [ "$RUN_ALL_FLUSH" != "no" ]; then
-			tar -czf source-backup.tar.gz work/sources/openmpi* work/sources/openfoam* 2>/dev/null
+			rm -rf work/sources-backup
+			mkdir work/sources-backup
+			mv `find work/sources -maxdepth 1 -type d -name open*` work/sources-backup/
 			./bin/clean-sources
-			tar --preserve -xf source-backup.tar.gz 2>/dev/null
+			mv work/sources-backup/* work/sources
+			rmdir work/sources-backup/
 		fi
 
 		SAVE_TOOLCHAIN=$MMTESTS_TOOLCHAIN
@@ -120,14 +123,6 @@ for MONITOR in $MONITORS; do
 		echo $CONFIG | grep -q abinit
 		if [ $? -eq 0 ]; then
 			echo "export ABINIT_PREPARE=yes" >> config
-		fi
-
-		if [ "$DISABLE_TOOLCHAIN_OPENFOAM" = "yes" ]; then
-			echo $CONFIG | grep -q openfoam
-			if [ $? -eq 0 ]; then
-				unset MMTESTS_TOOLCHAIN
-				echo Disabling toolchain for openfoam
-			fi
 		fi
 
 		echo Executing run-all $MONITOR $MMTESTS_TOOLCHAIN $CONFIG

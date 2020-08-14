@@ -1,0 +1,2 @@
+export OMP_PLACES=sockets
+export OMP_PROC_BIND=true
