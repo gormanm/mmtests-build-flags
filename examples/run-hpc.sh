@@ -1,10 +1,9 @@
 #!/bin/bash
 
 VERSION="-v14"
-MMTESTS_GIT_COMMIT="825e0dba4182932827fab721175366f630bdb8aa"
+MMTESTS_GIT_COMMIT="4351b6956f970d24fd79f803725f6fd3a6cf1729"
 MONITORS="no-monitor run-monitor"
 LOCAL_MIRROR=UNAVAILABLE
-DISABLE_TOOLCHAIN_OPENFOAM=
 export MMTESTS_TOOLCHAIN="gcc-9"
 
 rm -f /tmp/restore.sysctl
@@ -18,13 +17,13 @@ SINGLE_LIST=
 
 CONFIG_LIST="
 config-hpc-abinit-tmbt-hpcext-full
+config-hpc-frontistr-hinge-hpcext-full
+config-hpc-openfoam-motorbike-default-hpcext-full
+config-hpc-openfoam-motorbike-default-large-hpcext-full-meshonly
+config-hpc-openfoam-motorbike-subdomains-hpcext-full
+config-hpc-openfoam-motorbike-subdomains-large-hpcext-full-meshonly
 config-hpc-salmon-classicem-omp-hpcext-full
 config-hpc-specfem3d-small-s362ani-mpi-full
-config-hpc-openfoam-motorbike-default-hpcext-full
-config-hpc-openfoam-motorbike-subdomains-hpcext-full
-config-hpc-openfoam-motorbike-default-large-hpcext-full-meshonly
-config-hpc-openfoam-motorbike-subdomains-large-hpcext-full-meshonly
-config-hpc-frontistr-hinge-hpcext-full
 config-hpc-wrf-conus12km-hpcext-full
 "
 
