@@ -27,6 +27,9 @@ OLD_WM_CXXFLAGS=`grep "^export WM_CXXFLAGS=" etc/config.sh/settings | awk -F \" 
 sed -i -e "s/^export WM_CFLAGS=.*/export WM_CFLAGS=\"$OLD_WM_CFLAGS $CFLAGS\"/" etc/config.sh/settings
 sed -i -e "s/^export WM_CXXFLAGS=.*/export WM_CXXFLAGS=\"$OLD_WM_CXXFLAGS $CXXFLAGS\"/" etc/config.sh/settings
 
+# Consumed by boost ThirdParty build
+export CXXFLAGS
+
 log_opt "cOPT:             $CFLAGS"
 log_opt "c++Opt:           $CXXFLAGS"
 
