@@ -1,10 +1,11 @@
 #!/bin/bash
 
-VERSION="-v15"
-MMTESTS_GIT_COMMIT="192ff829b7f4c3b31c4bc5b491dbe873a0d437ac"
+VERSION="-v16"
+MMTESTS_GIT_COMMIT="0c8cf5bb5f16ea31980630b7e57b7c2631b510d5"
 MONITORS="no-monitor run-monitor"
 LOCAL_MIRROR=UNAVAILABLE
 export MMTESTS_TOOLCHAIN="gcc-9"
+export SOURCES_FLUSH="no"
 
 rm -f /tmp/restore.sysctl
 echo Backing up sysctl
@@ -18,8 +19,6 @@ SINGLE_LIST=
 CONFIG_LIST="
 config-hpc-abinit-tmbt-hpcext-full
 config-hpc-frontistr-hinge-hpcext-full
-config-hpc-openfoam-motorbike-default-hpcext-full
-config-hpc-openfoam-motorbike-default-large-hpcext-full-meshonly
 config-hpc-openfoam-motorbike-subdomains-hpcext-full
 config-hpc-openfoam-motorbike-subdomains-large-hpcext-full-meshonly
 config-hpc-salmon-classicem-omp-hpcext-full
@@ -103,7 +102,7 @@ for MONITOR in $MONITORS; do
 		rm -rf work/log
 		rm -rf work/testdisk
 		rm -rf work/tmp
-		if [ "$RUN_ALL_FLUSH" != "no" ]; then
+		if [ "$SOURCES_FLUSH" != "no" ]; then
 			rm -rf work/sources-backup
 			mkdir work/sources-backup
 			mv `find work/sources -maxdepth 1 -type d -name open*` work/sources-backup/
