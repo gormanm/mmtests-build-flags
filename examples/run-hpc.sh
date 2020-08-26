@@ -1,7 +1,7 @@
 #!/bin/bash
 
-VERSION="-v16"
-MMTESTS_GIT_COMMIT="0c8cf5bb5f16ea31980630b7e57b7c2631b510d5"
+VERSION="hpc-v4r1"
+MMTESTS_GIT_COMMIT="710ec556aa69326570ee00f08bfd09a8653a3ef2"
 MONITORS="no-monitor run-monitor"
 LOCAL_MIRROR=UNAVAILABLE
 export MMTESTS_TOOLCHAIN="gcc-9"
@@ -13,9 +13,6 @@ for SYSCTL in kernel.numa_balancing; do
 	sudo sysctl $SYSCTL | sed -e 's/ = /=/' | tee -a /tmp/restore.sysctl
 done
 
-SINGLE_VERSION=
-SINGLE_LIST=
-
 CONFIG_LIST="
 config-hpc-abinit-tmbt-hpcext-full
 config-hpc-frontistr-hinge-hpcext-full
@@ -24,11 +21,6 @@ config-hpc-openfoam-motorbike-subdomains-large-hpcext-full-meshonly
 config-hpc-salmon-classicem-omp-hpcext-full
 config-hpc-specfem3d-small-s362ani-mpi-full
 config-hpc-wrf-conus12km-hpcext-full
-"
-
-CONFIG_LIST_DISABLED="
-config-hpc-salmon-classicem-mpi-hpcext-full
-config-hpc-salmon-classicem-hybrid-hpcext-full
 "
 
 if [ ! -e run-mmtests.sh ]; then
@@ -68,15 +60,6 @@ rm -rf work
 
 # Update build-flags
 ./bin/update-build-flags.sh
-
-if [ "$SINGLE_LIST" != "" ]; then
-	CONFIG_LIST="$SINGLE_LIST"
-	if [ "$SINGLE_VERSION" = "" ]; then
-		echo SINGLE_VERSION must be defined for a single test
-		exit -1
-	fi
-	VERSION="$VERSION$SINGLE_VERSION"
-fi
 
 HOST=`hostname`
 for MONITOR in $MONITORS; do
@@ -132,9 +115,5 @@ for MONITOR in $MONITORS; do
 		echo $RET > hpc-logs$LOGNAME/$CONFIG/$HOST$VERSION/exit_status
 		export MMTESTS_TOOLCHAIN=$SAVE_TOOLCHAIN
 		restore_sysctl
-
-		if [ "$SINGLE_LIST" != "" ]; then
-			exit
-		fi
 	done
 done
