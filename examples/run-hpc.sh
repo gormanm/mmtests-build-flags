@@ -1,7 +1,7 @@
 #!/bin/bash
 
 VERSION="hpc-v4r1"
-MMTESTS_GIT_COMMIT="710ec556aa69326570ee00f08bfd09a8653a3ef2"
+MMTESTS_GIT_COMMIT="c2049ffc5faaf21be51a0629fec9f79dd08acfab"
 MONITORS="no-monitor run-monitor"
 LOCAL_MIRROR=UNAVAILABLE
 export MMTESTS_TOOLCHAIN="gcc-9"
