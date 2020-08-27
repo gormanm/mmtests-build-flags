@@ -7,6 +7,11 @@ LOCAL_MIRROR=UNAVAILABLE
 export MMTESTS_TOOLCHAIN="gcc-9"
 export SOURCES_FLUSH="no"
 
+# build-flags control
+export BUILDFLAGS_ENABLE_COMPILEFLAGS=yes
+export BUILDFLAGS_ENABLE_MPIFLAGS=yes
+export BUILDFLAGS_ENABLE_MPIFLAGS=yes
+
 rm -f /tmp/restore.sysctl
 echo Backing up sysctl
 for SYSCTL in kernel.numa_balancing; do
