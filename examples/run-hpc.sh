@@ -1,7 +1,7 @@
 #!/bin/bash
 
 VERSION="hpc-v4r1"
-MMTESTS_GIT_COMMIT="c2049ffc5faaf21be51a0629fec9f79dd08acfab"
+MMTESTS_GIT_COMMIT="7a481421ce10aac9d932d37431541775cd423572"
 MONITORS="no-monitor run-monitor"
 LOCAL_MIRROR=UNAVAILABLE
 export MMTESTS_TOOLCHAIN="gcc-9"
@@ -25,7 +25,7 @@ config-hpc-openfoam-motorbike-subdomains-hpcext-full
 config-hpc-openfoam-motorbike-subdomains-large-hpcext-full-meshonly
 config-hpc-salmon-classicem-omp-hpcext-full
 config-hpc-specfem3d-small-s362ani-mpi-full
-config-hpc-wrf-conus12km-hpcext-full
+config-hpc-wrf-conus12km-hpcext-mpi-full
 "
 
 if [ ! -e run-mmtests.sh ]; then
