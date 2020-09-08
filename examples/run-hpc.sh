@@ -1,7 +1,7 @@
 #!/bin/bash
 
-VERSION="hpc-v4r1"
-MMTESTS_GIT_COMMIT="7a481421ce10aac9d932d37431541775cd423572"
+VERSION="hpc-v4r2"
+MMTESTS_GIT_COMMIT="af2f189d851e0721ea7787491340c07765fc779f"
 MONITORS="no-monitor run-monitor"
 LOCAL_MIRROR=UNAVAILABLE
 export MMTESTS_TOOLCHAIN="gcc-9"
@@ -9,8 +9,8 @@ export SOURCES_FLUSH="no"
 
 # build-flags control
 export BUILDFLAGS_ENABLE_COMPILEFLAGS=yes
-export BUILDFLAGS_ENABLE_MPIFLAGS=yes
-export BUILDFLAGS_ENABLE_MPIFLAGS=yes
+export BUILDFLAGS_ENABLE_MPIFLAGS=no
+export BUILDFLAGS_ENABLE_SYSCTL=no
 
 rm -f /tmp/restore.sysctl
 echo Backing up sysctl
@@ -26,6 +26,8 @@ config-hpc-openfoam-motorbike-subdomains-large-hpcext-full-meshonly
 config-hpc-salmon-classicem-omp-hpcext-full
 config-hpc-specfem3d-small-s362ani-mpi-full
 config-hpc-wrf-conus12km-hpcext-mpi-full
+config-hpc-mpas-atmosphere-jwbaroclinic-full
+config-hpc-mpas-atmosphere-supercell-full
 "
 
 if [ ! -e run-mmtests.sh ]; then
