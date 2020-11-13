@@ -115,11 +115,11 @@ for MONITOR in $MONITORS; do
 
 		echo Executing run-all $MONITOR $MMTESTS_TOOLCHAIN $CONFIG
 		mkdir -p hpc-logs$LOGNAME/$CONFIG
-		./run-mmtests.sh --$MONITOR $HOST$VERSION 2>&1 | tee hpc-logs$LOGNAME/$CONFIG/$HOST$VERSION.log
+		./run-mmtests.sh --$MONITOR $HOST$VERSION$MMTESTS_TOOLCHAIN 2>&1 | tee hpc-logs$LOGNAME/$CONFIG/$HOST$VERSION.log
 		RET=$?
 		mkdir -p hpc-logs$LOGNAME/$CONFIG
-		mv work/log/$HOST$VERSION hpc-logs$LOGNAME/$CONFIG/$HOST$VERSION
-		echo $RET > hpc-logs$LOGNAME/$CONFIG/$HOST$VERSION/exit_status
+		mv work/log/$HOST$VERSION$MMTESTS_TOOLCHAIN hpc-logs$LOGNAME/$CONFIG/$HOST$VERSION$MMTESTS_TOOLCHAIN
+		echo $RET > hpc-logs$LOGNAME/$CONFIG/$HOST$VERSION$MMTESTS_TOOLCHAIN/exit_status
 		export MMTESTS_TOOLCHAIN=$SAVE_TOOLCHAIN
 		restore_sysctl
 	done
