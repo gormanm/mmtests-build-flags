@@ -4,7 +4,7 @@ LDFLAGS_EXTRA="$DEFAULT_OPTIMISATION_LEVEL"
 
 case $MMTESTS_TOOLCHAIN in
 gcc-10)
-	FFLAGS_EXTRA+=" -fallow-argument-mismatch"
+	FFLAGS_BASE+=" -fallow-argument-mismatch"
 	;;
 esac
 
@@ -15,6 +15,7 @@ LDFLAGS_EXTRA+=" $MARCH_FLAG_DEFAULT $MTUNE_FLAG_DEFAULT"
 build_callback() {
 	sed -i -e "s/^CFLAGS_LOCAL.*/& $CFLAGS_EXTRA $MARCH_FLAG_DEFAULT $MTUNE_FLAG_DEFAULT $COMPILE_OPT_ALWAYS/" configure.wrf
 	sed -i -e "s/^FCOPTIM.*/&      $FFLAGS_EXTRA $MARCH_FLAG_DEFAULT $MTUNE_FLAG_DEFAULT $COMPILE_OPT_ALWAYS/" configure.wrf
+	sed -i -e "s/^FCBASEOPTS_NO_G.*/& $FFLAGS_BASE/" configure.wrf
 }
 
 log_opt "CFLAGS_EXTRA:     $CFLAGS_LOCAL"
