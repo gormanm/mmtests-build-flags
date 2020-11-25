@@ -4,7 +4,7 @@ FFLAGS="$DEFAULT_OPTIMISATION_LEVEL"
 LDFLAGS=""
 
 case $MMTESTS_TOOLCHAIN in
-gcc-10)
+gcc-10|hpc-gcc-10)
 	FFLAGS+=" -fallow-argument-mismatch"
 	;;
 esac

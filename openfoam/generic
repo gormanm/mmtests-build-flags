@@ -2,10 +2,10 @@ CFLAGS="$DEFAULT_OPTIMISATION_LEVEL"
 CXXFLAGS="$DEFAULT_OPTIMISATION_LEVEL"
 
 case $MMTESTS_TOOLCHAIN in
-gcc-9)
+gcc-9|hpc-gcc-9)
 	CXXFLAGS+=" -Wno-deprecated-copy"
 	;;
-gcc-10)
+gcc-10|hpc-gcc-10)
 	CXXFLAGS+=" -Wno-deprecated-copy"
 	;;
 esac

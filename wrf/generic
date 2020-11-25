@@ -3,7 +3,7 @@ FFLAGS_EXTRA="$DEFAULT_OPTIMISATION_LEVEL"
 LDFLAGS_EXTRA="$DEFAULT_OPTIMISATION_LEVEL"
 
 case $MMTESTS_TOOLCHAIN in
-gcc-10)
+gcc-10|hpc-gcc-10)
 	FFLAGS_BASE+=" -fallow-argument-mismatch -fallow-invalid-boz"
 	;;
 esac

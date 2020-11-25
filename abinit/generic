@@ -4,7 +4,7 @@ FCFLAGS_EXTRA="$CFLAGS_EXTRA -ffree-line-length-none"
 LDFLAGS="-fopenmp"
 
 case $MMTESTS_TOOLCHAIN in
-gcc-10)
+gcc-10|hpc-gcc-10)
 	FCFLAGS_EXTRA+=" -w -fallow-argument-mismatch"
 	;;
 esac
