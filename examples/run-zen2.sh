@@ -20,9 +20,6 @@ done
 CONFIG_LIST="
 config-workload-stream-single-zen2
 config-workload-stream-omp-llcs-spread-zen2
-config-workload-stream-omp-llcs-zen2
-config-workload-stream-omp-nodes-spread-zen2
-config-workload-stream-omp-nodes-zen2
 "
 
 if [ ! -e run-mmtests.sh ]; then
