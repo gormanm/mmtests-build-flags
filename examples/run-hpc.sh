@@ -9,8 +9,8 @@ export SOURCES_FLUSH="no"
 
 # build-flags control
 export BUILDFLAGS_ENABLE_COMPILEFLAGS=yes
-export BUILDFLAGS_ENABLE_MPIFLAGS=no
-export BUILDFLAGS_ENABLE_SYSCTL=no
+export BUILDFLAGS_ENABLE_MPIFLAGS=yes
+export BUILDFLAGS_ENABLE_SYSCTL=yes
 
 rm -f /tmp/restore.sysctl
 echo Backing up sysctl
