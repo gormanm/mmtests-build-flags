@@ -1,2 +1,3 @@
 load_standard_environment
 load_mpi_environment
+load_dummy_environment
