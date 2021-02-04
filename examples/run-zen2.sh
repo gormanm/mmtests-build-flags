@@ -76,7 +76,7 @@ for MONITOR in $MONITORS; do
 	fi
 
 	for CONFIG in $CONFIG_LIST; do
-		TESTNAME=`echo $CONFIG | sed -e 's/config-workload-stream-//' -e 's/-zen.*//'`
+		TESTNAME=`echo $CONFIG | sed -e 's/config-workload-stream-/stream-/' -e 's/config-hpc-nas.*-zen[0-9]-/nas-ma/' -e 's/-zen.*//'`
 		if [ -e /tmp/STOP ]; then
 			echo Stopping
 			rm /tmp/STOP
