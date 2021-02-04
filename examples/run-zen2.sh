@@ -1,9 +1,10 @@
 #!/bin/bash
 
 VERSION="zen2-v1r1"
-MMTESTS_GIT_COMMIT="afd0bf41fb44398e5796125c2f9505345fbcf116"
+MMTESTS_GIT_COMMIT="5628140d956be6585eb02014223b5c8cb95c25c5"
 MONITORS="no-monitor"
 LOCAL_MIRROR=UNAVAILABLE
+TEST_PARTITION=${TEST_PARTITION:-}
 export MMTESTS_TOOLCHAIN="gcc-10"
 
 # build-flags control
@@ -20,6 +21,9 @@ done
 CONFIG_LIST="
 config-workload-stream-single-zen2
 config-workload-stream-omp-llcs-spread-zen2
+config-hpc-nas-d-class-mpi-256cpus-xfs-zen2-default
+config-hpc-nas-d-class-mpi-256cpus-xfs-zen2-tuned
+config-hpc-nas-d-class-mpi-Ncpus-xfs-zen2-selective
 "
 
 if [ ! -e run-mmtests.sh ]; then
@@ -39,6 +43,11 @@ cleanup() {
 }
 trap cleanup EXIT
 
+if [ "$TEST_PARTITION" = "" ]; then
+	echo A test partition must be specified to create a space for MPI temporary files
+	exit -1
+fi
+
 # Update mmtests and bring is to a known state
 git remote update || exit -1
 git checkout origin/master || exit -1
@@ -55,9 +64,6 @@ fi
 sed -i -e "s/mcp/$LOCAL_MIRROR/" shellpacks/common-config.sh
 git clean -f configs &> /dev/null
 ./bin/autogen-configs
-
-# Update build-flags
-./bin/update-build-flags.sh
 
 umount work/testdisk 2> /dev/null
 rm -rf work/testdisk
@@ -86,6 +92,7 @@ for MONITOR in $MONITORS; do
 
 		SAVE_TOOLCHAIN=$MMTESTS_TOOLCHAIN
 		cp configs/$CONFIG config
+		sed -i -e "s/sda6/$TEST_PARTITION/" config
 		if [ $? -ne 0 ]; then
 			echo Failed to copy configs/$CONFIG
 			exit -1
