@@ -1,7 +1,7 @@
 #!/bin/bash
 
 VERSION="zen2-v1r1"
-MMTESTS_GIT_COMMIT="5628140d956be6585eb02014223b5c8cb95c25c5"
+MMTESTS_GIT_COMMIT="05dcd7f41cf678eab2ef50d55278e1b1d29c4880"
 MONITORS="no-monitor"
 LOCAL_MIRROR=UNAVAILABLE
 TEST_PARTITION=${TEST_PARTITION:-}
@@ -76,7 +76,7 @@ for MONITOR in $MONITORS; do
 	fi
 
 	for CONFIG in $CONFIG_LIST; do
-		TESTNAME=`echo $CONFIG | sed -e 's/config-workload-stream-/stream-/' -e 's/config-hpc-nas.*-zen[0-9]-/nas-ma/' -e 's/-zen.*//'`
+		TESTNAME=`echo $CONFIG | sed -e 's/config-workload-stream-/stream-/' -e 's/config-hpc-nas.*-zen[0-9]-/nas-/' -e 's/-zen.*//'`
 		if [ -e /tmp/STOP ]; then
 			echo Stopping
 			rm /tmp/STOP
