@@ -63,6 +63,12 @@ load_mpi_environment() {
 	export OMPI_FC=$MMTESTS_FORTRAN_COMPILER
 	export OMPI_F77=$MMTESTS_FORTRAN_COMPILER
 	export OMPI_F90=$MMTESTS_FORTRAN_COMPILER
+
+	export OMPI_MPICC=$OMPI_CC
+	export OMPI_MPICXX=$OMPI_CXX
+	export OMPI_MPIFC=$OMPI_FC
+	export OMPI_MPIF77=$OMPI_F77
+	export OMPI_MPIF90=$OMPI_F90
 }
 
 rm /tmp/log_opt
