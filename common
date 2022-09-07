@@ -1,4 +1,5 @@
 SVE=no
+SYSTEM_C_COMPILER=`which gcc`
 
 set_toolchain() {
 	local TOOLCHAIN=$1
