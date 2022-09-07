@@ -30,6 +30,24 @@ set_toolchain() {
 		export MMTESTS_FORTRAN_COMPILER=gfortran-10
 		SVE=yes
 		;;
+	gcc-11|hpc-gcc-11)
+		install-depends gcc11 gcc11-c++ gcc11-fortran
+		export MMTESTS_C_COMPILER=gcc-11
+		export MMTESTS_CPP_COMPILER=cpp-11
+		export MMTESTS_CXX_COMPILER=g++-11
+		export MMTESTS_CXXCPP_COMPILER=cpp-11
+		export MMTESTS_FORTRAN_COMPILER=gfortran-11
+		SVE=yes
+		;;
+	gcc-12|hpc-gcc-12)
+		install-depends gcc12 gcc12-c++ gcc12-fortran
+		export MMTESTS_C_COMPILER=gcc-12
+		export MMTESTS_CPP_COMPILER=cpp-12
+		export MMTESTS_CXX_COMPILER=g++-12
+		export MMTESTS_CXXCPP_COMPILER=cpp-12
+		export MMTESTS_FORTRAN_COMPILER=gfortran-12
+		SVE=yes
+		;;
 	*)
 		die "Failed to load $TOOLCHAIN toolchain"
 		;;
